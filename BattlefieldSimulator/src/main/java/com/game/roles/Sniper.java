@@ -2,14 +2,13 @@ package com.game.roles;
 
 import com.game.strategy.HoldAngle;
 
-// 2. THE SNIPER
 public class Sniper extends Soldier {
-    public Sniper() {
-        super(new HoldAngle());
+    public Sniper(String teamName) {
+        super(new HoldAngle(), teamName);
     }
 
     @Override
     public void displayRole() {
-        System.out.println("Role: Dedicated Sniper");
+        System.out.println("[" + teamName + "] Role: Sniper (Long Range)");
     }
 }

@@ -1,32 +1,38 @@
 package com.game;
 
+import com.game.observer.DeadPlayerView;
+import com.game.observer.MatchFeed;
 import com.game.roles.*;
-import com.game.strategy.HoldAngle;
 
 public class MatchSimulator {
     public static void main(String[] args) {
-        
-        System.out.println("--- ROUND START --");
 
-        Soldier blue = new Sniper();
-        Soldier red = new Assaulter();
-        Soldier green = new IGL();
+        System.out.println("--- MATCH START ---");
 
-        blue.displayRole();
-        blue.fight();
-        
-        System.out.println();
-        
-        red.displayRole();
-        red.fight();
-        
-        System.out.println();
+        Soldier alphaSniper = new Sniper("Alpha");
+        Soldier alphaAssaulter = new Assaulter("Alpha");
 
-        green.displayRole();
-        green.fight();
-        
-        System.out.println("IGL picks up the fallen Sniper's weapon...");
-        green.setCombatStyle(new HoldAngle());
-        green.fight();
+        Soldier bravoSniper = new Sniper("Bravo");
+
+        MatchFeed feed = new MatchFeed();
+        alphaSniper.addObserver(feed);
+        alphaAssaulter.addObserver(feed);
+        bravoSniper.addObserver(feed);
+
+        alphaSniper.fight();
+        bravoSniper.fight();
+
+        System.out.println("\n--- EVENT: Alpha Sniper dies! ---");
+
+        DeadPlayerView deadAlphaPlayer = new DeadPlayerView("DeadSniper", "Alpha");
+
+        alphaAssaulter.addObserver(deadAlphaPlayer);
+        bravoSniper.addObserver(deadAlphaPlayer);
+
+        System.out.println("\n--- ACTION: Alpha Teammate moves ---");
+        alphaAssaulter.fight();
+
+        System.out.println("\n--- ACTION: Bravo Enemy moves ---");
+        bravoSniper.fight();
     }
 }
